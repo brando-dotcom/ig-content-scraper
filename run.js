@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { scrapeAll } from './src/scraper.js';
 import { scoreReels } from './src/scorer.js';
 import { remixAll } from './src/remixer.js';
-import { pushToDashboard } from './src/dashboard.js';
+import { pushToDashboard, fetchRejected } from './src/dashboard.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -55,8 +55,15 @@ async function main() {
   const top = ranked.slice(0, topN);
   console.log(`  -> ${ranked.length} outliers, taking top ${top.length}`);
 
+  let rejectedExamples = [];
+  if (!args.dryRun && dashboardUrl && ingestToken) {
+    console.log(`\n[2.5/4] Fetching previously rejected ideas for negative guidance`);
+    rejectedExamples = await fetchRejected(dashboardUrl, ingestToken);
+    console.log(`  -> ${rejectedExamples.length} rejected examples loaded`);
+  }
+
   console.log(`\n[3/4] Remixing through Brando's voice (model ${config.claude_model})`);
-  const { ideas, errors: remixErrors } = await remixAll(anthropicKey, config.claude_model, top);
+  const { ideas, errors: remixErrors } = await remixAll(anthropicKey, config.claude_model, top, rejectedExamples);
   console.log(`  -> ${ideas.length} ideas generated, ${remixErrors.length} errors`);
 
   const runDate = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');

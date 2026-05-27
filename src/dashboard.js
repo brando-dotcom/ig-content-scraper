@@ -1,3 +1,14 @@
+export async function fetchRejected(baseUrl, token) {
+  const url = baseUrl.replace(/\/$/, '') + '/api/rejected';
+  const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+  if (!res.ok) {
+    console.warn(`  rejected fetch ${res.status}, continuing without negative examples`);
+    return [];
+  }
+  const data = await res.json();
+  return data.examples || [];
+}
+
 export async function pushToDashboard(baseUrl, token, ideas) {
   const url = baseUrl.replace(/\/$/, '') + '/api/ideas';
   const payload = ideas.map((idea) => ({

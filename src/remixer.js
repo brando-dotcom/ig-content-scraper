@@ -49,7 +49,19 @@ function extractJson(text) {
   return JSON.parse(candidate.slice(start, end + 1));
 }
 
-export async function remixReel(client, model, reel) {
+function buildSystemPrompt(rejectedExamples) {
+  if (!rejectedExamples?.length) return SYSTEM_PROMPT;
+  const examples = rejectedExamples
+    .slice(0, 30)
+    .map((r, i) => `  ${i + 1}. @${r.source_account} → "${r.brando_hook || r.source_hook || ''}" (angle: ${r.core_angle || 'n/a'})`)
+    .join('\n');
+  return `${SYSTEM_PROMPT}
+
+REJECTED EXAMPLES — Brando has previously rejected these ideas as "not me". Do NOT pitch ideas with similar angles, hooks, or framings. If a competitor reel maps too closely to any of these, lean into a different angle entirely:
+${examples}`;
+}
+
+export async function remixReel(client, model, reel, systemPrompt = SYSTEM_PROMPT) {
   const userPrompt = `Account: @${reel.account_handle}
 Hook: ${reel.hook}
 Caption: ${(reel.caption_full || '').slice(0, 200)}
@@ -60,7 +72,7 @@ Remix this through Brando's voice and return the JSON.`;
   const resp = await client.messages.create({
     model,
     max_tokens: 1024,
-    system: SYSTEM_PROMPT,
+    system: systemPrompt,
     messages: [{ role: 'user', content: userPrompt }],
   });
 
@@ -74,8 +86,12 @@ Remix this through Brando's voice and return the JSON.`;
   return idea;
 }
 
-export async function remixAll(anthropicKey, model, reels) {
+export async function remixAll(anthropicKey, model, reels, rejectedExamples = []) {
   const client = new Anthropic({ apiKey: anthropicKey });
+  const systemPrompt = buildSystemPrompt(rejectedExamples);
+  if (rejectedExamples.length) {
+    console.log(`  injecting ${rejectedExamples.length} rejected examples as negative guidance`);
+  }
   const ideas = [];
   const errors = [];
 
@@ -83,7 +99,7 @@ export async function remixAll(anthropicKey, model, reels) {
     const reel = reels[i];
     try {
       console.log(`  remixing ${i + 1}/${reels.length} (@${reel.account_handle}, score ${reel.relative_score.toFixed(2)})...`);
-      const idea = await remixReel(client, model, reel);
+      const idea = await remixReel(client, model, reel, systemPrompt);
       ideas.push(idea);
     } catch (err) {
       console.error(`    failed: ${err.message}`);
