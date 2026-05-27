@@ -13,12 +13,6 @@ export async function scrapeHooksAccount(client, actorId, handle, perAccount, ma
 
   return items
     .filter((item) => item.productType === 'clips' || item.type === 'Video')
-    .filter((item) => {
-      const dur = Number(item.videoDuration || item.duration || 0);
-      // accept if duration unknown (>0 filter is too strict), else require short
-      if (!dur) return true;
-      return dur <= maxDurationSeconds;
-    })
     .map((item) => ({
       source_account: handle,
       source_url: item.url || (item.shortCode ? `https://www.instagram.com/reel/${item.shortCode}/` : null),
