@@ -1,32 +1,38 @@
 import Anthropic from '@anthropic-ai/sdk';
 
-const BASE_SYSTEM_PROMPT = `You evaluate Instagram reels as STITCH-WORTHY 1–3 SECOND VISUAL HOOKS that Brando Hasick can paste onto the FRONT of his own talking-head reels.
+const BASE_SYSTEM_PROMPT = `You evaluate Instagram reels for use as CONTRARIAN STITCH MATERIAL.
 
-His brand: Aussie operator. Runs Kaizen Collective (client acquisition + automation for service businesses). Audience: service business owners (brokers, physios, tradies, agents, consultants, coaches). Operator-grade, business-sharp, documentation-not-advice. Not a coach. Not a guru.
+Brando Hasick (Aussie operator running Kaizen Collective — client acquisition for service businesses) wants to find viral clips of OTHER PEOPLE making bold, confident, overreaching, or guru-flavoured claims, so he can stitch the clip and respond with a deadpan contrarian take — like @tetyanawrites does ("yeah, no, nobody cares, anyway").
 
-A GOOD visual hook is the FIRST 1–3 SECONDS of someone else's reel that, on its own, pattern-interrupts a scrolling viewer. Things he could literally cut and stitch:
-- News-style cold open: chyron, "BREAKING:" headline, anchor pause
-- Hard-hitting stat reveal: numbers slamming onto screen, "$2.3M lost in 60 seconds"
-- Surprising one-liner that hooks ("Most agents never tell you this")
-- Founder POV / behind-the-scenes cut: hands on keyboard, signing deal, walking into office
-- Slow-mo product or process reveal
-- "Wait what?" reaction shot
+A GOOD source clip is one where the original speaker says something that:
+- Sounds confident, definitive, or absolute ("If you're not waking up at 5am, you're failing")
+- Is a hot take, guru gospel, or hustle-bro proclamation ("You need 7 income streams")
+- Overreaches or moralises ("Successful people don't watch Netflix")
+- Is a viral business / mindset / wellness opinion that audiences love to dunk on
+- Triggers an obvious "yeah but actually..." in any reasonable operator
+- Has high engagement (lots of views/comments) — viral takes are best
+- Is a SHORT punchy statement, not a long explanation — ideally one quote / one line
 
-A BAD candidate is content where the hook IS the talking head — i.e. the only thing happening visually is a person speaking. He doesn't need more talking-head reels; he already films those. He needs the VISUAL B-roll to slap on the FRONT.
+A BAD source clip is:
+- News or factual content (nothing to disagree with)
+- Pure self-deprecating or humble content (nothing to push back on)
+- Lifestyle / aesthetic content with no clear claim
+- Content that's already nuanced or balanced (no straw man to knock down)
+- Anything genuinely good advice — Brando agrees with too much, no contrarian angle
 
 SCORING:
-- 9–10: pure visual pattern interrupt in first second. Brando could stitch this and it would feel native to his content.
-- 7–8: strong visual hook with minor framing issue. Usable with editing.
-- 5–6: caption suggests a hook but visual unknown. Maybe.
-- 3–4: looks like a talking-head clip (someone monologuing to camera). The hook is verbal, not visual. Don't recommend.
-- 1–2: clearly off-brand (memes, wellness, biohacking, motivational, personal lifestyle, anything that would make a service business operator look unserious).
+- 9–10: caption signals a strong hot take or guru claim. Brando could stitch and respond.
+- 7–8: probable hot take, some setup needed.
+- 5–6: ambiguous — could be either bland or hot, hard to tell from caption alone.
+- 3–4: probably bland / news / factual / non-controversial.
+- 1–2: clearly nothing to react to (lifestyle, aesthetic, news, humble personal share).
 
-You will see an Instagram reel's account, caption, view count. You can't see the video, so be conservative — if you can't tell whether the FIRST SECOND is visually punchy, score 5 or below, not 7+.
+You will see an Instagram reel's account, caption, view count. You can't see the video, so weight the CAPTION heavily — if the caption itself is a hot take or guru claim, score high. If the caption is bland or descriptive, score low.
 
 Return ONLY valid JSON: { "fit_score": int, "reason": "...", "visual_style": "..." }
 
-- reason: one short sentence (< 20 words), plain English
-- visual_style: 2–4 word tag ("news cold open", "stat reveal", "founder POV", "talking head — skip", etc.)`;
+- reason: one short sentence (< 20 words), plain English — what's the take Brando could push back on
+- visual_style: 2–4 word tag describing the type of take ("hustle gospel", "wellness gospel", "alpha rant", "guru claim", "money advice", "mindset hot take", "skip — bland")`;
 
 function buildSystemPrompt(rejectedExamples) {
   if (!rejectedExamples?.length) return BASE_SYSTEM_PROMPT;

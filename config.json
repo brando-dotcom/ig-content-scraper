@@ -27,16 +27,16 @@
   "apify_actor_id": "apify/instagram-scraper",
   "claude_model": "claude-sonnet-4-5",
   "hooks_accounts": [
-    "business",
-    "wsj",
-    "cnbc",
-    "insider",
-    "nowthisnews",
-    "axios",
-    "joepompliano",
-    "morningbrew",
-    "fortunemag",
-    "reuters"
+    "grantcardone",
+    "patrickbetdavid",
+    "andyfrisella",
+    "bedroskeuilian",
+    "timgrover_official",
+    "lewishowes",
+    "melrobbins",
+    "garyvee",
+    "iamtimstorey",
+    "danlok"
   ],
   "hooks_per_account": 10,
   "hooks_max_duration_seconds": 15
