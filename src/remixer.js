@@ -35,8 +35,21 @@ OUTPUT FORMAT (JSON):
   "brando_angle": "",
   "cta": "ENGINE | CAMERA | TOOLS",
   "thumbnail_text": "",
-  "notes": ""
+  "notes": "",
+  "script_outline": [
+    "Short bullet — the on-camera opening line / first beat",
+    "Second beat — the proof or example he'll point to",
+    "Third beat — the contrarian or operator-specific twist",
+    "Fourth beat — the punch / land",
+    "CTA delivery — how he naturally lands the ENGINE / CAMERA / TOOLS pitch"
+  ]
 }
+
+script_outline rules:
+- 4–6 short bullets, each <14 words, written in Brando's voice
+- Read like talking points he'd glance at before hitting record, not a written script
+- No filler bullets like "intro" or "outro" — every beat is a specific thing he says or shows
+- Last bullet IS the CTA delivery, not a separate "end with CTA" note
 
 Return only valid JSON. No preamble. No explanation.`;
 
