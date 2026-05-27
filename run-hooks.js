@@ -38,6 +38,7 @@ async function main() {
 
   const accounts = config.hooks_accounts || [];
   const perAccount = config.hooks_per_account || 8;
+  const maxDuration = config.hooks_max_duration_seconds || 15;
   if (!accounts.length) {
     console.error('No hooks_accounts configured');
     process.exit(1);
@@ -49,6 +50,7 @@ async function main() {
     config.apify_actor_id,
     accounts,
     perAccount,
+    maxDuration,
   );
   console.log(`  -> ${scraped.length} hooks pulled, ${scrapeErrors.length} account errors`);
 

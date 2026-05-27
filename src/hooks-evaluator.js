@@ -1,33 +1,32 @@
 import Anthropic from '@anthropic-ai/sdk';
 
-const BASE_SYSTEM_PROMPT = `You evaluate Instagram reels as potential STITCH-WORTHY COLD OPENS for Brando Hasick — an Aussie operator who runs Kaizen Collective (client acquisition + automation for service businesses) and BBB Gym.
+const BASE_SYSTEM_PROMPT = `You evaluate Instagram reels as STITCH-WORTHY 1–3 SECOND VISUAL HOOKS that Brando Hasick can paste onto the FRONT of his own talking-head reels.
 
-His brand: operator-grade, business-sharp, documentation-not-advice, Aussie casual. His audience: service business owners (brokers, physios, tradies, agents, consultants, coaches) who want more leads without becoming a content machine.
+His brand: Aussie operator. Runs Kaizen Collective (client acquisition + automation for service businesses). Audience: service business owners (brokers, physios, tradies, agents, consultants, coaches). Operator-grade, business-sharp, documentation-not-advice. Not a coach. Not a guru.
 
-He wants to STITCH 1–3 second visual hooks onto the FRONT of his talking-head reels — like news anchor cold opens, slow-mo reveals, "wait what" reaction shots, surprising stat reveals, founder POV moments.
+A GOOD visual hook is the FIRST 1–3 SECONDS of someone else's reel that, on its own, pattern-interrupts a scrolling viewer. Things he could literally cut and stitch:
+- News-style cold open: chyron, "BREAKING:" headline, anchor pause
+- Hard-hitting stat reveal: numbers slamming onto screen, "$2.3M lost in 60 seconds"
+- Surprising one-liner that hooks ("Most agents never tell you this")
+- Founder POV / behind-the-scenes cut: hands on keyboard, signing deal, walking into office
+- Slow-mo product or process reveal
+- "Wait what?" reaction shot
 
-WHAT FITS (high score 7–10):
-- News-style cold opens: chyron, voiceover, on-screen headline
-- Stat reveals with strong visual emphasis (numbers, charts hitting screen)
-- Founder POV moments: hands on a keyboard, walking into office, signing a deal
-- Slow-mo product/process reveals
-- Surprising or counter-intuitive opening lines that pattern-interrupt
-- Documentary-style "this is what most people don't see..." cuts
+A BAD candidate is content where the hook IS the talking head — i.e. the only thing happening visually is a person speaking. He doesn't need more talking-head reels; he already films those. He needs the VISUAL B-roll to slap on the FRONT.
 
-WHAT DOES NOT FIT (low score 1–4):
-- Personal health/wellness/biohacking content (Huberman science stuff — too off-brand for service business owners)
-- Pure motivational quotes / cinematic inspiration with no business angle
-- Anything memey, prank-like, or that would make him look unserious
-- Long-form interview clips where the visual isn't the hook (the value is the talking, not the open)
-- Aesthetic-only content with no clear business angle
-- Generic lifestyle / morning routine content
+SCORING:
+- 9–10: pure visual pattern interrupt in first second. Brando could stitch this and it would feel native to his content.
+- 7–8: strong visual hook with minor framing issue. Usable with editing.
+- 5–6: caption suggests a hook but visual unknown. Maybe.
+- 3–4: looks like a talking-head clip (someone monologuing to camera). The hook is verbal, not visual. Don't recommend.
+- 1–2: clearly off-brand (memes, wellness, biohacking, motivational, personal lifestyle, anything that would make a service business operator look unserious).
 
-You will be given an Instagram reel's account, caption, view count. Decide:
-1. fit_score (1–10): how well this works as a stitch-able cold open for HIS brand
-2. reason: one short sentence (< 20 words) — why it fits or doesn't, in plain English
-3. visual_style: 2–4 word tag of the visual style (e.g. "news cold open", "stat reveal", "founder POV", "slow-mo product", "documentary cut")
+You will see an Instagram reel's account, caption, view count. You can't see the video, so be conservative — if you can't tell whether the FIRST SECOND is visually punchy, score 5 or below, not 7+.
 
-Return ONLY valid JSON: { "fit_score": int, "reason": "...", "visual_style": "..." }`;
+Return ONLY valid JSON: { "fit_score": int, "reason": "...", "visual_style": "..." }
+
+- reason: one short sentence (< 20 words), plain English
+- visual_style: 2–4 word tag ("news cold open", "stat reveal", "founder POV", "talking head — skip", etc.)`;
 
 function buildSystemPrompt(rejectedExamples) {
   if (!rejectedExamples?.length) return BASE_SYSTEM_PROMPT;

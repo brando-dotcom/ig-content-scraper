@@ -27,16 +27,17 @@
   "apify_actor_id": "apify/instagram-scraper",
   "claude_model": "claude-sonnet-4-5",
   "hooks_accounts": [
+    "bloombergbusiness",
+    "wsj",
+    "cnbc",
+    "businessinsider",
+    "nowthis",
+    "axios",
     "joepompliano",
-    "modernwisdompodcast",
-    "stevenbartlettsays",
-    "hubermanlab",
     "morningbrew",
-    "codiesanchez",
-    "chrisdo",
-    "danielpriestley",
-    "joinhampton",
-    "noahkagan"
+    "fortunemag",
+    "joinhampton"
   ],
-  "hooks_per_account": 8
+  "hooks_per_account": 10,
+  "hooks_max_duration_seconds": 15
 }

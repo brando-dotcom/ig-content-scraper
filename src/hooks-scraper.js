@@ -1,10 +1,10 @@
 import { ApifyClient } from 'apify-client';
 
-export async function scrapeHooksAccount(client, actorId, handle, perAccount) {
+export async function scrapeHooksAccount(client, actorId, handle, perAccount, maxDurationSeconds = 15) {
   const input = {
     directUrls: [`https://www.instagram.com/${handle}/`],
     resultsType: 'posts',
-    resultsLimit: perAccount * 2,
+    resultsLimit: perAccount * 4, // wider net since we filter by duration
     addParentData: false,
   };
 
@@ -13,6 +13,12 @@ export async function scrapeHooksAccount(client, actorId, handle, perAccount) {
 
   return items
     .filter((item) => item.productType === 'clips' || item.type === 'Video')
+    .filter((item) => {
+      const dur = Number(item.videoDuration || item.duration || 0);
+      // accept if duration unknown (>0 filter is too strict), else require short
+      if (!dur) return true;
+      return dur <= maxDurationSeconds;
+    })
     .map((item) => ({
       source_account: handle,
       source_url: item.url || (item.shortCode ? `https://www.instagram.com/reel/${item.shortCode}/` : null),
@@ -29,16 +35,16 @@ export async function scrapeHooksAccount(client, actorId, handle, perAccount) {
     .slice(0, perAccount);
 }
 
-export async function scrapeHooksAll(apifyToken, actorId, accounts, perAccount) {
+export async function scrapeHooksAll(apifyToken, actorId, accounts, perAccount, maxDurationSeconds = 15) {
   const client = new ApifyClient({ token: apifyToken });
   const results = [];
   const errors = [];
 
   for (const handle of accounts) {
     try {
-      console.log(`  scraping hooks @${handle}...`);
-      const hooks = await scrapeHooksAccount(client, actorId, handle, perAccount);
-      console.log(`    pulled ${hooks.length} hooks`);
+      console.log(`  scraping hooks @${handle} (max ${maxDurationSeconds}s)...`);
+      const hooks = await scrapeHooksAccount(client, actorId, handle, perAccount, maxDurationSeconds);
+      console.log(`    pulled ${hooks.length} hooks (short-form only)`);
       results.push(...hooks);
     } catch (err) {
       console.error(`    failed @${handle}: ${err.message}`);
