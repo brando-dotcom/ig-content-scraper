@@ -1,0 +1,16 @@
+{
+  "name": "ig-content-scraper",
+  "version": "1.0.0",
+  "description": "Scrape IG outlier reels, remix through Brando's voice, push to Notion",
+  "type": "module",
+  "main": "run.js",
+  "scripts": {
+    "start": "node run.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.1",
+    "@notionhq/client": "^2.2.15",
+    "apify-client": "^2.10.0",
+    "dotenv": "^16.4.5"
+  }
+}

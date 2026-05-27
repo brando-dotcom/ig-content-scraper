@@ -1,0 +1,31 @@
+{
+  "accounts": [
+    "alexhormozi",
+    "colegordon99",
+    "jasminestar",
+    "thejimkwik",
+    "tobydreher",
+    "chris.dufey",
+    "dankoe",
+    "taylorawayne",
+    "ryanpineda",
+    "therealkiyosaki",
+    "myronolden",
+    "patrickbetdavid",
+    "aaronwardcoaching",
+    "garyvee",
+    "lewishowes",
+    "callummcgrath_",
+    "frankgreef",
+    "kinso",
+    "danmartell",
+    "samgaudet",
+    "takimoore",
+    "jackhendersen"
+  ],
+  "reels_per_account": 20,
+  "outlier_threshold": 1.5,
+  "top_n": 20,
+  "apify_actor_id": "apify/instagram-scraper",
+  "claude_model": "claude-sonnet-4-5"
+}
