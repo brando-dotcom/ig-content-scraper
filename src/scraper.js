@@ -3,7 +3,7 @@ import { ApifyClient } from 'apify-client';
 export async function scrapeAccount(client, actorId, handle, reelsPerAccount) {
   // apify/instagram-scraper: pull more posts than needed since we filter to reels after
   const input = {
-    username: [handle],
+    directUrls: [`https://www.instagram.com/${handle}/`],
     resultsType: 'posts',
     resultsLimit: reelsPerAccount * 2,
     addParentData: false,
