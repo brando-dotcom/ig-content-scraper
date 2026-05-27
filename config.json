@@ -27,5 +27,18 @@
   "outlier_threshold": 1.5,
   "top_n": 20,
   "apify_actor_id": "apify/instagram-scraper",
-  "claude_model": "claude-sonnet-4-5"
+  "claude_model": "claude-sonnet-4-5",
+  "hooks_accounts": [
+    "joepompliano",
+    "modernwisdompodcast",
+    "stevenbartlettsays",
+    "hubermanlab",
+    "morningbrew",
+    "codiesanchez",
+    "chrisdo",
+    "danielpriestley",
+    "joinhampton",
+    "noahkagan"
+  ],
+  "hooks_per_account": 8
 }
